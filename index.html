@@ -36,7 +36,13 @@
           <button id="lock-button" type="button">Lock</button>
         </header>
         <p id="doc-meta" class="doc-meta"></p>
-        <article id="content" class="markdown-body"></article>
+        <div class="doc-layout">
+          <aside class="toc-panel" aria-labelledby="toc-title">
+            <h2 id="toc-title">Contents</h2>
+            <nav id="toc" aria-label="Table of contents"></nav>
+          </aside>
+          <article id="content" class="markdown-body"></article>
+        </div>
       </section>
     </main>
     <script type="module" src="./app.js"></script>

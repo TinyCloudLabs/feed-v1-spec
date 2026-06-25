@@ -7,6 +7,8 @@ const content = document.querySelector("#content");
 const docTitle = document.querySelector("#doc-title");
 const docMeta = document.querySelector("#doc-meta");
 const lockButton = document.querySelector("#lock-button");
+const toc = document.querySelector("#toc");
+const tocPanel = document.querySelector(".toc-panel");
 
 let payloadPromise;
 
@@ -85,6 +87,48 @@ async function renderMermaid() {
   }
 }
 
+function buildTableOfContents() {
+  const headings = Array.from(content.querySelectorAll("h2, h3"));
+  const usedIds = new Map();
+  toc.replaceChildren();
+
+  if (!headings.length) {
+    tocPanel.hidden = true;
+    return;
+  }
+
+  tocPanel.hidden = false;
+  const list = document.createElement("ol");
+  list.className = "toc-list";
+
+  headings.forEach((heading, index) => {
+    const base = slugify(heading.textContent) || `section-${index + 1}`;
+    const count = usedIds.get(base) || 0;
+    usedIds.set(base, count + 1);
+    heading.id = count ? `${base}-${count + 1}` : base;
+
+    const item = document.createElement("li");
+    item.className = `toc-item toc-${heading.tagName.toLowerCase()}`;
+
+    const link = document.createElement("a");
+    link.href = `#${heading.id}`;
+    link.textContent = heading.textContent;
+    item.append(link);
+    list.append(item);
+  });
+
+  toc.append(list);
+}
+
+function slugify(value) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/`/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const button = form.querySelector("button");
@@ -96,6 +140,7 @@ form.addEventListener("submit", async (event) => {
     docTitle.textContent = unlocked.title;
     docMeta.textContent = `Built ${unlocked.builtAt} from source SHA-256 ${unlocked.sourceSha256}.`;
     content.innerHTML = unlocked.html;
+    buildTableOfContents();
     gate.hidden = true;
     docShell.hidden = false;
     passwordInput.value = "";
@@ -109,6 +154,7 @@ form.addEventListener("submit", async (event) => {
 
 lockButton.addEventListener("click", () => {
   content.replaceChildren();
+  toc.replaceChildren();
   docShell.hidden = true;
   gate.hidden = false;
   statusEl.textContent = "";
