@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TinyCloud Feed v1 Implementation Spec</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="page-shell">
+      <section id="gate" class="gate" aria-labelledby="gate-title">
+        <p class="eyebrow">TinyCloud Feed</p>
+        <h1 id="gate-title">Feed v1 Implementation Spec</h1>
+        <p class="lede">
+          This static page decrypts the spec locally in your browser.
+        </p>
+        <form id="unlock-form" class="unlock-form">
+          <label for="password">Password</label>
+          <div class="password-row">
+            <input id="password" name="password" type="password" autocomplete="current-password" required autofocus>
+            <button type="submit">Unlock</button>
+          </div>
+          <p id="status" class="status" role="status" aria-live="polite"></p>
+        </form>
+        <p class="note">
+          GitHub Pages is static hosting. This page uses client-side encryption rather than server-side authentication.
+        </p>
+      </section>
+
+      <section id="doc-shell" class="doc-shell" hidden>
+        <header class="doc-header">
+          <div>
+            <p class="eyebrow">TinyCloud Feed</p>
+            <h1 id="doc-title">Feed v1 Implementation Spec</h1>
+          </div>
+          <button id="lock-button" type="button">Lock</button>
+        </header>
+        <p id="doc-meta" class="doc-meta"></p>
+        <article id="content" class="markdown-body"></article>
+      </section>
+    </main>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
